@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function loadData() {
+            let req = new XMLHttpRequest();
+
+            req.addEventListener("readystatechange", (e) => {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    let json = JSON.parse(req.responseText);
+                    
+                    let con = document.querySelector("#container");
+                    json.forEach(x => {
+                        let html = makeTag(x);
+                        con.appendChild(html);
+                    });
+                }
+            });
+
+            req.open("GET", "/data.php");
+            req.send();
+        }
+
+        function makeTag(item){
+            let div = document.createElement("div");
+            div.innerHTML = `<span class="name">${item.name}</span>
+                <span class="age">${item.age}</span>
+                <span class="score">${item.score}</span>`;
+            return div;
+        }
+
+        window.addEventListener("load", () => {
+            loadData();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="container">
+
+    </div>
+    
+</body>
+
+</html>
